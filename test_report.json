@@ -1,0 +1,107 @@
+{
+  "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "executable": "/usr/bin/python3",
+  "cwd": "/home/enki/fold",
+  "total_tests": 19,
+  "passed": 19,
+  "failed": 0,
+  "test_results": [
+    {
+      "name": "test_canonical_json_sorting_and_compactness",
+      "status": "PASSED",
+      "elapsed_ms": 0.099
+    },
+    {
+      "name": "test_duplicate_key_rejection",
+      "status": "PASSED",
+      "elapsed_ms": 0.255
+    },
+    {
+      "name": "test_unicode_normalization_nfc",
+      "status": "PASSED",
+      "elapsed_ms": 4.712
+    },
+    {
+      "name": "test_nan_infinity_disallowed",
+      "status": "PASSED",
+      "elapsed_ms": 0.099
+    },
+    {
+      "name": "test_top_level_object_required",
+      "status": "PASSED",
+      "elapsed_ms": 0.071
+    },
+    {
+      "name": "test_malformed_json_rejected",
+      "status": "PASSED",
+      "elapsed_ms": 0.055
+    },
+    {
+      "name": "test_proposal_sha256_tamper_sensitivity",
+      "status": "PASSED",
+      "elapsed_ms": 0.904
+    },
+    {
+      "name": "test_action_proposal_contract_roundtrip",
+      "status": "PASSED",
+      "elapsed_ms": 0.166
+    },
+    {
+      "name": "test_valid_replay_execution_end_to_end",
+      "status": "PASSED",
+      "elapsed_ms": 0.182
+    },
+    {
+      "name": "test_invariant_1_permit_scope_invalid",
+      "status": "PASSED",
+      "elapsed_ms": 0.078
+    },
+    {
+      "name": "test_invariant_2_process_epoch_mismatch",
+      "status": "PASSED",
+      "elapsed_ms": 0.068
+    },
+    {
+      "name": "test_invariant_3_permit_expiry",
+      "status": "PASSED",
+      "elapsed_ms": 0.035
+    },
+    {
+      "name": "test_invariant_4_proposal_binding_mismatch",
+      "status": "PASSED",
+      "elapsed_ms": 0.058
+    },
+    {
+      "name": "test_invariant_5_canonicalization_version_mismatch",
+      "status": "PASSED",
+      "elapsed_ms": 0.038
+    },
+    {
+      "name": "test_nonce_replay_rejected_in_epoch",
+      "status": "PASSED",
+      "elapsed_ms": 0.03
+    },
+    {
+      "name": "test_unknown_fixture_rejected",
+      "status": "PASSED",
+      "elapsed_ms": 0.119
+    },
+    {
+      "name": "test_deep_immutability",
+      "status": "PASSED",
+      "elapsed_ms": 0.066
+    },
+    {
+      "name": "test_static_side_effect_and_forbidden_import_audit",
+      "status": "PASSED",
+      "elapsed_ms": 12.272
+    },
+    {
+      "name": "test_quarantine_isolation",
+      "status": "PASSED",
+      "elapsed_ms": 11.205
+    }
+  ],
+  "report_sha256": "4f3f084b41853b52738b3872a31c21fa6ea5173c718cd80f03b57a87acdd766e"
+}

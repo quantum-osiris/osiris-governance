@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "osiris-governance"
+version = "0.1.0"
+description = "Deterministic, side-effect-free replay proof core for OSIRIS Governance"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
