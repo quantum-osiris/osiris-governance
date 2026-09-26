@@ -13,7 +13,7 @@ Explicitly excluded:
 - Execution grants and cryptographic signatures
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.0-reference"
 __all__ = [
     "ActionKind",
     "Capability",

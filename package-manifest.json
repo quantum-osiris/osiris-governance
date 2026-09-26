@@ -1,0 +1,91 @@
+{
+  "format_id": "osiris.governance.package-manifest",
+  "format_version": "1.0.0",
+  "package_name": "osiris-governance",
+  "version": "0.1.0",
+  "classification": "REPLAY_ONLY_REFERENCE_IMPLEMENTATION",
+  "created_at_utc": "2026-09-26T10:42:00Z",
+  "git_commit": "a6cd8ad740380abd17043cd1297e40e99442e083",
+  "storage": {
+    "persistence_class": "local-managed-storage",
+    "durable_path": "/home/enki/analysis/osiris-governance/",
+    "staging_path": "/tmp/osiris-governance/",
+    "external_anchor": "none"
+  },
+  "review_record": {
+    "authoring_system": "gemini_antigravity_cli",
+    "review_system": "gemini_antigravity_cli",
+    "independence_level": "SELF_REVIEW",
+    "independence_notes": "Self-review can discover defects; it cannot independently certify absence of defects.",
+    "human_reviewer": null,
+    "ten_point_review_gate_status": "ALL_TEN_PASSED"
+  },
+  "integrity_notice": "SHA-256 checksums are byte-integrity metadata only. They are not signatures, authentication, or external authority grants.",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "13ec779b40415416fbf965fa47c3051d0d632774f1e656cd05875db2ee5266a4",
+      "bytes": 526
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "a3a7faf6d81667ee88447c2f8074412c14c3f34073e0875f5da81ddc04a69321",
+      "bytes": 411
+    },
+    {
+      "path": "run_tests.py",
+      "sha256": "b068daeb46227ce7a69622d9ee9cfcbf1ee095a535697ea3ce37617b07ba74d8",
+      "bytes": 20657
+    },
+    {
+      "path": "src/osiris_governance/__init__.py",
+      "sha256": "689f82d37f3ebfc6294a183be3d4d296aa69775c33a9db690419f9265b298be3",
+      "bytes": 999
+    },
+    {
+      "path": "src/osiris_governance/canonical.py",
+      "sha256": "bcf8f60ae72f624fc1f3690a216b66d803d4192b2749245249eb39e3c0cde7dd",
+      "bytes": 3325
+    },
+    {
+      "path": "src/osiris_governance/contracts.py",
+      "sha256": "67c82f36b826c46c54e4e39f124b6856e373c9c3a96dc5144c2dd06f085f6431",
+      "bytes": 4451
+    },
+    {
+      "path": "src/osiris_governance/errors.py",
+      "sha256": "7e5edabf09d86970c7bc4dd154b8beeecd22ebf7a260254713a9e178ed45e47a",
+      "bytes": 781
+    },
+    {
+      "path": "src/osiris_governance/replay.py",
+      "sha256": "f8c8996aa528bd788e0fcb047c24740e2c49d7356170fd1a93ca06d8aec07d45",
+      "bytes": 5475
+    },
+    {
+      "path": "src/osiris_governance/replay_governor.py",
+      "sha256": "e3711acf7ec1e27c9fabfb718ad9751ee67dd64c92fd8aa6e6954bada36cac79",
+      "bytes": 3386
+    },
+    {
+      "path": "tests/pytest.py",
+      "sha256": "b87827d75666a1b380a7d89c8f96cd20ba53916905442a7b80424febf6bbae4c",
+      "bytes": 662
+    },
+    {
+      "path": "tests/test_canonical_binding.py",
+      "sha256": "03f1362b70a93413124eab76e97ad94da0ae86abb84211c99b1bac0679e9e2de",
+      "bytes": 5224
+    },
+    {
+      "path": "tests/test_replay_governor.py",
+      "sha256": "410a4586f1e024723bd09c2a7d3cb3d3af75315bc8a5b2623e5bcc9420e21308",
+      "bytes": 14248
+    },
+    {
+      "path": "test_report.json",
+      "sha256": "4f3f084b41853b52738b3872a31c21fa6ea5173c718cd80f03b57a87acdd766e",
+      "bytes": 2621
+    }
+  ]
+}

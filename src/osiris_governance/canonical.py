@@ -1,12 +1,14 @@
 """Canonical JSON serialization and binding for OSIRIS Governance.
 
 Implements OSIRIS-CANONICAL-JSON-V1:
-- RFC 8785 compliant key ordering (Unicode code point order)
+- Project-local canonical JSON profile (JCS-inspired code point key sorting)
+- Not claimed to be RFC 8785 conformant until conformance vectors pass
 - Strict whitespace elimination (separators=(',', ':'))
 - Rejection of duplicate object keys
 - Disallowance of NaN, Infinity, -Infinity
+- Unicode NFC normalization
 - Strict UTF-8 encoding
-- Deterministic SHA-256 digest generation
+- Deterministic unkeyed SHA-256 digest generation
 """
 
 import hashlib
