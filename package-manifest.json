@@ -29,15 +29,15 @@
     "clean_room_replay_reference": {
       "build_path": "/tmp/osiris-governance",
       "snapshot_path": "/home/enki/analysis/osiris-governance",
-      "test_count": 21,
+      "test_count": 44,
       "classification": "SELF_REPORTED_REFERENCE_IMPLEMENTATION_TEST_RESULT"
     }
   },
   "tests_summary": {
-    "total": 21,
-    "passed": 21,
+    "total": 44,
+    "passed": 44,
     "failed": 0,
-    "elapsed_seconds": 0.0173
+    "elapsed_seconds": 0.012
   },
   "repository_provenance": {
     "build_repository": {

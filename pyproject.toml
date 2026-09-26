@@ -12,3 +12,7 @@ dependencies = []
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[project.scripts]
+osiris-governance = "osiris_governance.cli:main"
+

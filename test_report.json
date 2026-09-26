@@ -4,10 +4,10 @@
   "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
   "executable": "/usr/bin/python3",
   "cwd": "/tmp/osiris-governance",
-  "total_tests": 21,
-  "passed": 21,
+  "total_tests": 44,
+  "passed": 44,
   "failed": 0,
-  "elapsed_seconds": 0.0173,
+  "elapsed_seconds": 0.0117,
   "failures_detail": [],
-  "report_sha256": "714ee9e8a08b3f87457eca655db7945cfe95103537a484b9d714050a9709b8ca"
+  "report_sha256": "616904ba04270354f0781510779f80749cfc0d0f8660de8150ae8829195d5e3a"
 }
