@@ -16,23 +16,55 @@
   "review_independence": "SELF_REVIEW",
   "production_readiness": "NOT_ESTABLISHED",
   "decision": "PENDING_INDEPENDENT_REVIEW",
-  "created_at_utc": "2026-09-26T10:55:00Z",
-  "git_commit": "64c710a35f3b268f8bd930beb9a8a7bcc774cf13",
-  "working_tree": "clean",
+  "created_at_utc": "2026-09-26T11:15:00Z",
   "quarantine_isolation_status": "TESTED_IMPORT_ISOLATION",
   "canonicalization_profile": "OSIRIS-CANONICAL-JSON-V1 (Project-local JCS-inspired code point sorting; not claimed to be RFC 8785 conformant until conformance vectors pass)",
   "test_runner": "python3 -m unittest",
-  "tests_summary": {
-    "total": 19,
-    "passed": 19,
-    "failed": 0,
-    "elapsed_seconds": 0.0135
+  "test_counts_provenance": {
+    "quarantined_prototype_v2": {
+      "path": "/home/enki/fold",
+      "test_count": 40,
+      "classification": "SELF_REPORTED_PROTOTYPE_LOCAL_UNIT_TEST_RESULT"
+    },
+    "clean_room_replay_reference": {
+      "build_path": "/tmp/osiris-governance",
+      "snapshot_path": "/home/enki/analysis/osiris-governance",
+      "test_count": 21,
+      "classification": "SELF_REPORTED_REFERENCE_IMPLEMENTATION_TEST_RESULT"
+    }
   },
-  "storage": {
-    "staging_path": "/tmp/osiris-governance/",
-    "durable_path": "/home/enki/analysis/osiris-governance/",
-    "persistence_class": "local-managed-storage",
-    "external_anchor": "none"
+  "tests_summary": {
+    "total": 21,
+    "passed": 21,
+    "failed": 0,
+    "elapsed_seconds": 0.0173
+  },
+  "repository_provenance": {
+    "build_repository": {
+      "path": "/tmp/osiris-governance",
+      "persistence": "ephemeral",
+      "status": "active_build_source"
+    },
+    "review_snapshot": {
+      "path": "/home/enki/analysis/osiris-governance",
+      "persistence": "local-managed-storage",
+      "git_metadata_preserved": true,
+      "byte_equivalence_to_build_commit": "verified"
+    },
+    "canonical_repository": {
+      "status": "not-yet-selected"
+    }
+  },
+  "vocabulary_contract": {
+    "replay_invocation": {
+      "function": "prepare_replay(proposal_bytes, permit, active_process_epoch_id, now_utc) -> ReplayInvocation",
+      "permitted_fields": ["fixture_id", "canonical_proposal_bytes", "nonce", "process_epoch_id"],
+      "strictly_excluded_fields": ["path", "command", "callable", "url", "cloud", "budget", "credential"]
+    },
+    "execution_request": {
+      "status": "DEFERRED_TO_FUTURE_CONTROL_PLANE",
+      "notes": "Generic execution requests are disallowed from the replay-only core package."
+    }
   },
   "review_record": {
     "authoring_system": "gemini_antigravity_cli",
@@ -60,18 +92,18 @@
     },
     {
       "path": "src/osiris_governance/__init__.py",
-      "sha256": "50ca309a3950a741fbe1e52e9ed97f95f0736cb0f75c88a2eeb698a77fcb5780",
-      "bytes": 1009
+      "sha256": "dad7aa3b8c953a44442eb13fdeb2b49d330894f90ea9820ba83ec9316c51be87",
+      "bytes": 1217
     },
     {
       "path": "src/osiris_governance/canonical.py",
-      "sha256": "0f164f856de8bd998de2f91437049e71d7d42a6bfb46b0d90f264fcaf5507fea",
-      "bytes": 3448
+      "sha256": "6c05c4369732ea8632be81bc88f5bea87cc435af42b990a98d6ab49ff78b6ac1",
+      "bytes": 3858
     },
     {
       "path": "src/osiris_governance/contracts.py",
-      "sha256": "67c82f36b826c46c54e4e39f124b6856e373c9c3a96dc5144c2dd06f085f6431",
-      "bytes": 4451
+      "sha256": "5f2c535b42ab7bde477597b590d6b37d8a9d8ceee8110658ff98ea8d781c781f",
+      "bytes": 6670
     },
     {
       "path": "src/osiris_governance/errors.py",
@@ -80,8 +112,8 @@
     },
     {
       "path": "src/osiris_governance/replay.py",
-      "sha256": "f8c8996aa528bd788e0fcb047c24740e2c49d7356170fd1a93ca06d8aec07d45",
-      "bytes": 5475
+      "sha256": "077165a998c308e4237c0b450ba0d09d618c1861f3724465fac39a9e9e65a9a0",
+      "bytes": 6794
     },
     {
       "path": "src/osiris_governance/replay_governor.py",
@@ -90,18 +122,18 @@
     },
     {
       "path": "tests/test_canonical_binding.py",
-      "sha256": "5afbabdec910247375bc3aa8c9de1fdad05b15f2dd5f1de183735ed39fd87c0c",
-      "bytes": 5581
+      "sha256": "b5238c450adf234951b75e37f9a56e469503d81b9364528680dfeb8494b07c7e",
+      "bytes": 6882
     },
     {
       "path": "tests/test_replay_governor.py",
-      "sha256": "3aec9a6e77ebb7eeb6262930b61c81911fbc6e20b40dc054e690054261f53714",
-      "bytes": 14699
+      "sha256": "13d160b436a778efd5545e66e0fa23a42fd8ddf76bde4d7e3c5f0def6a62b689",
+      "bytes": 16460
     },
     {
       "path": "test_report.json",
-      "sha256": "6e1d49899832ac3640c35ac8dba109d43fbe2b2da869f08d85eeaac8c5121cd1",
-      "bytes": 451
+      "sha256": "0f3315617b13fadad03a48fb6628b45814b37d7ca6ea36a2bb3b3b61f5aae50e",
+      "bytes": 458
     }
   ]
 }

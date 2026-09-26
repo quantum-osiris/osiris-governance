@@ -19,10 +19,12 @@ from osiris_governance.contracts import (
     ActionProposal,
     Capability,
     ReplayExecutionPermit,
+    ReplayInvocation,
 )
 from osiris_governance.errors import GovernanceViolation, ReplayError
-from osiris_governance.replay import execute_replay
+from osiris_governance.replay import execute_replay, prepare_replay
 from osiris_governance.replay_governor import ReplayGovernor
+
 
 
 class TestReplayGovernor(unittest.TestCase):
@@ -340,5 +342,45 @@ class TestReplayGovernor(unittest.TestCase):
                     )
 
 
+    def test_prepare_replay_invocation_invariants(self):
+        """Verify prepare_replay packages a minimal ReplayInvocation with zero external execution fields."""
+        governor = ReplayGovernor(policy_version="policy-v1", process_epoch_id="epoch-test-prep")
+        canon_bytes = canonicalize_json(self.sample_proposal.to_dict())
+
+        permit = governor.issue_replay_permit(
+            proposal=self.sample_proposal,
+            canonical_bytes=canon_bytes,
+            nonce="nonce-prep-001",
+            now_utc="2026-09-26T06:00:00Z",
+            expires_at_utc="2026-09-26T06:01:00Z",
+        )
+
+        invocation = prepare_replay(
+            proposal_bytes=canon_bytes,
+            permit=permit,
+            active_process_epoch_id="epoch-test-prep",
+            now_utc="2026-09-26T06:00:30Z",
+        )
+
+        self.assertIsInstance(invocation, ReplayInvocation)
+        self.assertEqual(invocation.fixture_id, "replay-fixture-v1")
+        self.assertEqual(invocation.canonical_proposal_bytes, canon_bytes)
+        self.assertEqual(invocation.nonce, "nonce-prep-001")
+        self.assertEqual(invocation.process_epoch_id, "epoch-test-prep")
+
+        # Invariant: ReplayInvocation has ZERO external execution fields
+        for forbidden_attr in ("path", "command", "callable", "url", "cloud", "budget", "credential"):
+            self.assertFalse(
+                hasattr(invocation, forbidden_attr),
+                f"ReplayInvocation must not have '{forbidden_attr}' attribute",
+            )
+
+        # Execute using ReplayInvocation
+        result = execute_replay(invocation)
+        self.assertEqual(result.status, "REPLAYED")
+        self.assertEqual(result.fixture_id, "replay-fixture-v1")
+
+
 if __name__ == "__main__":
     unittest.main()
+

@@ -19,7 +19,11 @@ __all__ = [
     "Capability",
     "ActionProposal",
     "ReplayExecutionPermit",
+    "ReplayInvocation",
     "ReplayResult",
+    "ReplayGovernor",
+    "prepare_replay",
+    "execute_replay",
     "GovernanceError",
     "GovernanceViolation",
     "CanonicalizationError",
@@ -31,6 +35,7 @@ from .contracts import (
     Capability,
     ActionProposal,
     ReplayExecutionPermit,
+    ReplayInvocation,
     ReplayResult,
 )
 from .errors import (
@@ -39,3 +44,6 @@ from .errors import (
     CanonicalizationError,
     ReplayError,
 )
+from .replay import prepare_replay, execute_replay
+from .replay_governor import ReplayGovernor
+

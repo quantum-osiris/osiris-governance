@@ -124,6 +124,36 @@ class TestCanonicalBinding(unittest.TestCase):
         self.assertEqual(restored.capability, Capability.REPLAY)
         self.assertEqual(restored.fixture_id, proposal.fixture_id)
 
+    def test_non_ascii_identifier_rejection(self):
+        """Verify that authority-bearing identifiers strictly reject non-ASCII Unicode strings."""
+        base_dict = {
+            "format_id": "osiris.action-proposal",
+            "format_version": "1.0.0",
+            "schema_id": "urn:osiris:schema:action-proposal",
+            "schema_version": "1.0.0",
+            "proposal_id": "prop-001",
+            "action_kind": "REPLAY_FIXTURE",
+            "capability": "REPLAY",
+            "fixture_id": "replay-fixture-v1",
+            "parameters": {"param1": 123},
+            "created_at_utc": "2026-09-26T06:00:00Z",
+        }
+
+        # 1. Non-ASCII proposal_id must be rejected
+        tampered_id = dict(base_dict)
+        tampered_id["proposal_id"] = "prop-\u00e9"
+        with self.assertRaises(CanonicalizationError) as ctx:
+            ActionProposal.from_dict(tampered_id)
+        self.assertEqual(ctx.exception.code, "NON_ASCII_IDENTIFIER")
+
+        # 2. Non-ASCII fixture_id must be rejected
+        tampered_fixture = dict(base_dict)
+        tampered_fixture["fixture_id"] = "fixture-\u03c0"
+        with self.assertRaises(CanonicalizationError) as ctx:
+            ActionProposal.from_dict(tampered_fixture)
+        self.assertEqual(ctx.exception.code, "NON_ASCII_IDENTIFIER")
+
 
 if __name__ == "__main__":
     unittest.main()
+

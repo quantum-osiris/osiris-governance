@@ -17,7 +17,7 @@ from .canonical import (
     compute_proposal_sha256,
     parse_canonical_json,
 )
-from .contracts import ReplayExecutionPermit, ReplayResult, _freeze_val
+from .contracts import ReplayExecutionPermit, ReplayInvocation, ReplayResult, _freeze_val
 from .errors import GovernanceViolation, ReplayError
 
 # Fixed in-memory fixture registry. Zero disk or network access.
@@ -42,28 +42,24 @@ DEFAULT_FIXTURE_REGISTRY: Mapping[str, Mapping[str, Any]] = {
 }
 
 
-def execute_replay(
+def prepare_replay(
     proposal_bytes: bytes,
     permit: ReplayExecutionPermit,
     active_process_epoch_id: str,
     now_utc: str,
-    fixture_registry: Mapping[str, Mapping[str, Any]] | None = None,
-) -> ReplayResult:
-    """Execute deterministic fixture replay under strict permit governance.
+) -> ReplayInvocation:
+    """Validate all boundary invariants and package a minimal ReplayInvocation.
 
-    Parameters:
-        proposal_bytes: Canonical UTF-8 JSON bytes representing the ActionProposal.
-        permit: The ReplayExecutionPermit issued by ReplayGovernor.
-        active_process_epoch_id: The epoch identifier of the active execution process.
-        now_utc: Current ISO 8601 UTC timestamp string.
-        fixture_registry: Optional mapping of fixture IDs to in-memory fixtures.
+    Carries strictly:
+    - fixture_id
+    - canonical_proposal_bytes
+    - nonce
+    - process_epoch_id
 
-    Returns:
-        ReplayResult with deterministic normalized output and byte digest.
+    Carries zero filesystem paths, zero subprocess commands, zero network specs,
+    zero cloud tokens, and zero callables.
 
-    Raises:
-        GovernanceViolation: If any boundary invariant fails.
-        ReplayError: If the fixture does not exist in registry.
+    Raises GovernanceViolation if any invariant check fails.
     """
     # Invariant 1: Permit scope check
     if permit.scope != "REPLAY_ONLY_NON_CRYPTOGRAPHIC":
@@ -101,7 +97,7 @@ def execute_replay(
             f"Permit canonicalization version '{permit.canonicalization_version}' != '{CANONICALIZATION_VERSION}'",
         )
 
-    # Parse and validate proposal content
+    # Parse and validate proposal content fixture ID match
     parsed_proposal = parse_canonical_json(proposal_bytes)
     proposal_fixture_id = str(parsed_proposal.get("fixture_id", ""))
     if proposal_fixture_id != permit.fixture_id:
@@ -110,19 +106,65 @@ def execute_replay(
             f"Proposal fixture_id '{proposal_fixture_id}' != permit fixture_id '{permit.fixture_id}'",
         )
 
+    return ReplayInvocation(
+        fixture_id=permit.fixture_id,
+        canonical_proposal_bytes=proposal_bytes,
+        nonce=permit.nonce,
+        process_epoch_id=active_process_epoch_id,
+    )
+
+
+def execute_replay(
+    proposal_bytes: bytes | ReplayInvocation,
+    permit: ReplayExecutionPermit | None = None,
+    active_process_epoch_id: str | None = None,
+    now_utc: str | None = None,
+    fixture_registry: Mapping[str, Mapping[str, Any]] | None = None,
+) -> ReplayResult:
+    """Execute deterministic fixture replay under strict permit governance.
+
+    Accepts either:
+    1. A pre-validated ReplayInvocation (as first positional argument) and optional now_utc
+    2. (proposal_bytes, permit, active_process_epoch_id, now_utc)
+
+    Returns:
+        ReplayResult with deterministic normalized output and byte digest.
+
+    Raises:
+        GovernanceViolation: If any boundary invariant fails.
+        ReplayError: If the fixture does not exist in registry.
+    """
+    if isinstance(proposal_bytes, ReplayInvocation):
+        invocation = proposal_bytes
+        ts_now = now_utc or ""
+    else:
+        if permit is None or active_process_epoch_id is None or now_utc is None:
+            raise ValueError(
+                "permit, active_process_epoch_id, and now_utc are required when passing raw proposal_bytes"
+            )
+        invocation = prepare_replay(
+            proposal_bytes=proposal_bytes,
+            permit=permit,
+            active_process_epoch_id=active_process_epoch_id,
+            now_utc=now_utc,
+        )
+        ts_now = now_utc
+
+
     # Lookup fixture in memory
     registry = fixture_registry if fixture_registry is not None else DEFAULT_FIXTURE_REGISTRY
-    if permit.fixture_id not in registry:
+    if invocation.fixture_id not in registry:
         raise ReplayError(
             "FIXTURE_NOT_FOUND",
-            f"Fixture '{permit.fixture_id}' not found in in-memory registry",
+            f"Fixture '{invocation.fixture_id}' not found in in-memory registry",
         )
 
-    fixture_data = registry[permit.fixture_id]
+    fixture_data = registry[invocation.fixture_id]
+    parsed_proposal = parse_canonical_json(invocation.canonical_proposal_bytes)
 
     # Deterministic normalization of output
     normalized_dict = {
-        "fixture_id": permit.fixture_id,
+        "fixture_id": invocation.fixture_id,
         "fixture_data": dict(fixture_data),
         "requested_parameters": parsed_proposal.get("parameters", {}),
         "replay_status": "DETERMINISTIC_REPLAY_SUCCESS",
@@ -134,8 +176,9 @@ def execute_replay(
 
     return ReplayResult(
         status="REPLAYED",
-        fixture_id=permit.fixture_id,
+        fixture_id=invocation.fixture_id,
         normalized_output=_freeze_val(normalized_dict),
         output_sha256=output_sha256,
-        replayed_at_utc=now_utc,
+        replayed_at_utc=ts_now,
     )
+

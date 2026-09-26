@@ -3,11 +3,11 @@
   "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
   "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
   "executable": "/usr/bin/python3",
-  "cwd": "/home/enki/fold",
-  "total_tests": 19,
-  "passed": 19,
+  "cwd": "/tmp/osiris-governance",
+  "total_tests": 21,
+  "passed": 21,
   "failed": 0,
-  "elapsed_seconds": 0.0135,
+  "elapsed_seconds": 0.0173,
   "failures_detail": [],
-  "report_sha256": "d34ee81dacb6abf13b1fbef15b2d1513401eac1e7786e68967409d05b5ea9826"
+  "report_sha256": "714ee9e8a08b3f87457eca655db7945cfe95103537a484b9d714050a9709b8ca"
 }

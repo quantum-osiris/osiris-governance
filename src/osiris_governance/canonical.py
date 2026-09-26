@@ -1,15 +1,20 @@
 """Canonical JSON serialization and binding for OSIRIS Governance.
 
 Implements OSIRIS-CANONICAL-JSON-V1:
-- Project-local canonical JSON profile (JCS-inspired code point key sorting)
-- Not claimed to be RFC 8785 conformant until conformance vectors pass
-- Strict whitespace elimination (separators=(',', ':'))
-- Rejection of duplicate object keys
-- Disallowance of NaN, Infinity, -Infinity
-- Unicode NFC normalization
-- Strict UTF-8 encoding
-- Deterministic unkeyed SHA-256 digest generation
+- Project-local canonical JSON profile (JCS-inspired code point key sorting).
+- NOT claimed to be RFC 8785 conformant until external conformance vectors pass.
+- Key ordering: Unicode code-point order via Python string sorting.
+- Strict whitespace elimination (separators=(',', ':')).
+- Rejection of duplicate object keys at raw parse ingress.
+- Disallowance of NaN, Infinity, -Infinity.
+- Unicode normalization: Unicode NFC (Normalization Form C) is an intentional semantic
+  transformation rule. Equivalent decomposed and precomposed Unicode sequences
+  (e.g., U+00E9 and U+0065 U+0301) intentionally serialize to identical canonical bytes.
+- Authority-bearing identifiers: Strictly constrained to ASCII in contracts.
+- Strict UTF-8 encoding.
+- Deterministic unkeyed SHA-256 digest generation.
 """
+
 
 import hashlib
 import json
