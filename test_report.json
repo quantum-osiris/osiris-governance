@@ -3,11 +3,11 @@
   "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
   "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
   "executable": "/usr/bin/python3",
-  "cwd": "/tmp/osiris-governance",
+  "cwd": "/home/enki/analysis/osiris-governance",
   "total_tests": 44,
   "passed": 44,
   "failed": 0,
-  "elapsed_seconds": 0.0117,
+  "elapsed_seconds": 0.0367,
   "failures_detail": [],
-  "report_sha256": "616904ba04270354f0781510779f80749cfc0d0f8660de8150ae8829195d5e3a"
+  "report_sha256": "52b86d44a0ddffed7753f41b3ed8ca16b98c15faec4614abf1b67a6b46dfad2b"
 }
