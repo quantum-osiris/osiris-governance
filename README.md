@@ -32,6 +32,7 @@ src/osiris_governance/
 - [`OSIRIS_CLOUD_RUN_SECURITY_BASELINE.md`](docs/OSIRIS_CLOUD_RUN_SECURITY_BASELINE.md): Managed Cloud Run sandbox, IAM identity separation (`actAs`), Secret Manager integration, and digest pinning (`sha256:`).
 - [`OSIRIS_ANDROID_EDGE_PROTOTYPE.md`](docs/OSIRIS_ANDROID_EDGE_PROTOTYPE.md): Android evidence cockpit and constrained node boundaries, SQLite WAL store-and-forward, and StrongBox Key Attestation target.
 - [`OSIRIS_EVIDENCE_MODEL.md`](docs/OSIRIS_EVIDENCE_MODEL.md): RFC 8785 Canonical JSON profile, four-coordinate scope binding, local hash-linked ledger model, and deterministic replay protocol.
+- [`INCIDENT_SECRET_EXPOSURE_20260927.md`](docs/INCIDENT_SECRET_EXPOSURE_20260927.md): Credential exposure incident containment, revocation checklist, and release-blocking incident gate.
 - [`OSIRIS_CLAIM_CLOSURE.md`](docs/OSIRIS_CLAIM_CLOSURE.md): Signed claim closure records: pack layout, two-stage verification, policy v1, and what verification does not establish. CLI: `scripts/closure_pack.py`.
 - [`CLAIM_AUDIT.md`](docs/CLAIM_AUDIT.md): Master audit and de-scoping register mapping 20 technical assertions to code, tests, and public wording.
 

@@ -83,3 +83,4 @@ In campaign `REAL-CAMPAIGN-20260926T160434Z`, Gate G-08 evaluated to `FALSE` due
 1. `S_deployed = FALSE` is immutably recorded in `evidence/operational/REAL-CAMPAIGN-20260926T160434Z/`.
 2. The release candidate `v0.1.0-beta.1` remains classified as an **Offline Reference Implementation**, with production deployment status firmly set to `BLOCKED`.
 3. Progression to a successor campaign requires closing the open security items tracked outside this repository.
+3. Progression to a successor campaign requires resolving the IAM and credential exposure issues documented in `INCIDENT_SECRET_EXPOSURE_20260927.md`.
