@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from typing import Any, Mapping
+import hashlib
+import hmac
+import secrets
+from dataclasses import asdict, dataclass, replace
+from datetime import datetime, timedelta, timezone
+from typing import Any, Mapping, Optional
 
 from .canonical import CANONICALIZATION_VERSION, canonical_sha256, canonicalize_json
 
@@ -87,3 +91,80 @@ class ReplayResultRecord:
     payload: Mapping[str, Any]
     executed_at_utc: str
     raw_payload_sha256: str = ""
+
+
+PROMOTION_SCOPE = "PROMOTION_AUTHORITY_VERIFIED"
+VERIFICATION_SCOPE = "DETERMINISTIC_VERIFICATION_SEALED"
+
+
+@dataclass(frozen=True)
+class AuthorityPermit:
+    """Cryptographic/Deterministic authority token authorizing privileged ledger state transitions."""
+    issuer: str
+    scope: str
+    target_digest: str
+    nonce: str
+    issued_at_utc: str
+    expires_at_utc: str
+    policy_version: str = "OSIRIS-SPEC-VERIF-015"
+    signature: str = ""
+
+    def signing_bytes(self) -> bytes:
+        fields = asdict(self)
+        fields.pop("signature")
+        return canonicalize_json(fields)
+
+
+def _utc(ts: str) -> datetime:
+    return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+
+
+class PermitAuthority:
+    """Issues and checks HMAC-signed AuthorityPermits.
+
+    The caller supplies the key; it must come from outside the agent's write
+    surface (e.g. an operator-owned 0600 file). This package does no file I/O.
+    In-process, a valid signature only proves the permit came from a holder of
+    the key; it is not an OS isolation boundary.
+    """
+
+    MIN_KEY_BYTES = 32
+
+    def __init__(self, key: bytes):
+        if len(key) < self.MIN_KEY_BYTES:
+            raise ValueError(f"permit key must be at least {self.MIN_KEY_BYTES} bytes")
+        self._key = key
+
+    def _sign(self, permit: AuthorityPermit) -> str:
+        return hmac.new(self._key, permit.signing_bytes(), hashlib.sha256).hexdigest()
+
+    def issue(self, issuer: str, scope: str, target_digest: str, ttl_seconds: int = 300,
+              now: Optional[datetime] = None) -> AuthorityPermit:
+        if not target_digest:
+            raise ValueError("permit target_digest must not be empty")
+        now = now or datetime.now(timezone.utc)
+        permit = AuthorityPermit(
+            issuer=issuer,
+            scope=scope,
+            target_digest=target_digest,
+            nonce=secrets.token_hex(16),
+            issued_at_utc=now.isoformat(),
+            expires_at_utc=(now + timedelta(seconds=ttl_seconds)).isoformat(),
+        )
+        return replace(permit, signature=self._sign(permit))
+
+    def check(self, permit: AuthorityPermit, now: Optional[datetime] = None) -> Optional[str]:
+        """Returns None if the permit is authentic and current, else the reason it is not."""
+        if not permit.signature or not hmac.compare_digest(permit.signature, self._sign(permit)):
+            return "PERMIT_SIGNATURE_INVALID"
+        if not permit.target_digest:
+            return "PERMIT_TARGET_EMPTY"
+        now = now or datetime.now(timezone.utc)
+        try:
+            issued, expires = _utc(permit.issued_at_utc), _utc(permit.expires_at_utc)
+        except ValueError:
+            return "PERMIT_TIMESTAMP_MALFORMED"
+        if not (issued <= now < expires):
+            return "PERMIT_EXPIRED_OR_NOT_YET_VALID"
+        return None
+

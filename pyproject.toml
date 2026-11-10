@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "osiris-governance"
-version = "0.1.0"
+version = "0.2.0"
 description = "OSIRIS deterministic control plane, capability governor, and authority boundary"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -20,7 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-dependencies = []
+dependencies = ["numpy>=1.24"]
 
 [project.optional-dependencies]
 signing = [

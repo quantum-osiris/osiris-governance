@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "document_type": "OSIRIS_EVIDENCE_CORRECTION",
+  "correction_id": "COR-2026-10-27-PCRB-001",
+  "created_at": "2026-10-27T11:31:54Z",
+  "canonicalization": {
+    "profile": "OSIRIS-CANONICAL-JSON-V1",
+    "base_standard": "RFC8785",
+    "encoding": "UTF-8"
+  },
+  "hash_algorithm": "sha256",
+  "subject": {
+    "path": "evidence/pcrb_telemetry_ledger.jsonl",
+    "sha256": "sha256:2b6a98b5a184f24f1e71e5c8698845ed6cc9ae5631d1ea9446411b7a32879e8f",
+    "introduced_in_commit": "71ee6efb703b4ea9bb04b5a401be600494cfe080",
+    "line_digest_rule": "sha256 of the line's bytes, without its newline",
+    "lines": [
+      {"line": 1, "kind": "HEADER_COMMENT", "line_sha256": "sha256:64d4446f68fde041dd80d7d45f28ba263d6f1cb7993af5751c693e09a682faa1"},
+      {"line": 2, "kind": "ACTION", "record_id": "PCRB-ACT-1791372511397", "entry_hash": "98f356fd298d8deea7e17a064ef1fb878cda10e74647cc66c59ce81060c50c76", "line_sha256": "sha256:672d8d1301bb3fb9260d7da2087e41b2490cb57edbc9d82ba528da07637a4a57"},
+      {"line": 3, "kind": "FRAME", "record_id": "PCRB-TR-00000001", "entry_hash": "00ff9e4b1dc1458feba9fa5cc78103adeeb328e7b3c34a9244a92d7e79fe9eb8", "line_sha256": "sha256:d6af3918e07dea1c5c946f1d01011e64c695dec39b2154e2fc227d0007d055a7"},
+      {"line": 4, "kind": "ACTION", "record_id": "PCRB-ACT-1791372511743", "entry_hash": "c87a9225e5445d7931543c574cb20ce5e9412875aed280f3b13b1fc818511489", "line_sha256": "sha256:15b55f0ee73b5b96061d286275a5e6a3d5ac15d3b1bd27c9bbe7c54db0cc6921"},
+      {"line": 5, "kind": "ACTION", "record_id": "PCRB-ACT-1791372902919", "entry_hash": "60341301460c9efb9acfab67283121ed08644523dab05403a6ca3abb563798fb", "line_sha256": "sha256:5ee816fadd46661acf30b8e0d153d388dd317d7a9148c96e3ed4284e3fa70f56"},
+      {"line": 6, "kind": "FRAME", "record_id": "PCRB-TR-00000001", "entry_hash": "3a2b5181e50fcd90dfa7a80d1bc454fd72eb52de1a8a0d92c653c33d681d07ba", "line_sha256": "sha256:94933aeb6c254707bb001ff989118744dc4e3a58faa91ef19217caad3db2daa3"},
+      {"line": 7, "kind": "ACTION", "record_id": "PCRB-ACT-1791372903273", "entry_hash": "fb0d7abdad4073997b942e44084e52650a2a5d5a519cb1feb772d7e6f48a5329", "line_sha256": "sha256:98a14653c7fdbbd010cd5804256b5c5959ed8fbe4b2300b006a9aa8303706dfe"}
+    ]
+  },
+  "original_rows_modified": false,
+  "reclassification": {
+    "as_written": {
+      "evidence_status": "MEASURED",
+      "evidence_role": "SUPPORTING",
+      "claim_ceiling": "LOCAL_TEST_RESULT",
+      "telemetry_source": "SYNTHETIC_LATTICE"
+    },
+    "corrected": {
+      "evidence_class": "SIMULATED",
+      "evidence_role": "NONE",
+      "supports": []
+    },
+    "statement": "The six records are output of a synthetic generator, not measurements. They support no claim."
+  },
+  "retracted_fields": [
+    {
+      "fields": ["action.target_parameter", "action.old_value", "action.new_value", "action.reason"],
+      "lines": [2, 4, 5, 7],
+      "as_written": "phase_lock_deg recalibrated from 51.843 to 51.843",
+      "retracted_claim": "Universal locking angle θ_lock = 51.843°",
+      "tag": "RETRACTED",
+      "reason": "A Bell state is invariant under symmetric RY rotations; the peak was noise (16th of 19 angles)."
+    },
+    {
+      "fields": ["frame.phi", "frame.lambda_c", "frame.gamma", "frame.xi"],
+      "lines": [3, 6],
+      "as_written": "CCCE metric values",
+      "retracted_claim": "CCCE \"consciousness\" metrics",
+      "tag": "RETRACTED",
+      "reason": "Tested on hardware and refuted (osiris-cli README)."
+    },
+    {
+      "fields": ["frame.consciousness_state"],
+      "lines": [3, 6],
+      "as_written": "dormant (line 3), emerging (line 6)",
+      "retracted_claim": "CCCE \"consciousness\" state labels",
+      "tag": "RETRACTED",
+      "reason": "Tested on hardware and refuted (osiris-cli README)."
+    }
+  ],
+  "unsupported_fields": [
+    {
+      "fields": ["frame.w2_distance", "frame.shannon_entropy"],
+      "lines": [3, 6],
+      "tag": "UNSUPPORTED",
+      "reason": "Values from a synthetic generator that is not in this repository and records no seed, so they cannot be regenerated."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "code": "SYNTHETIC_MARKED_MEASURED",
+      "statement": "Both frame records (lines 3 and 6) give telemetry_source SYNTHETIC_LATTICE and evidence_status MEASURED.",
+      "test": "test_f1_every_frame_is_synthetic_but_marked_measured"
+    },
+    {
+      "id": "F2",
+      "code": "NO_OP_RECALIBRATION",
+      "statement": "All four action records set phase_lock_deg from 51.843 to 51.843. The recalibration cannot change the parameter, so it cannot reduce W_2, and it fires twice for each frame.",
+      "test": "test_f2_every_recalibration_leaves_the_parameter_where_it_was"
+    },
+    {
+      "id": "F3",
+      "code": "TWO_RUNS_NOT_A_TRANSITION",
+      "statement": "Lines 2 and 5 both chain from 64 zeros, so the file holds two separate chains, recorded at 2026-10-07T11:28:31Z and 11:35:02Z. Each holds one frame, and both frames are PCRB-TR-00000001 with frame_seq 1. Dormant and emerging come from separate one-frame runs; the file records no transition between them.",
+      "test": "test_f3_the_file_holds_two_one_frame_runs"
+    },
+    {
+      "id": "F4",
+      "code": "XI_IS_DERIVED",
+      "statement": "In both frames xi equals lambda_c * phi / gamma to within 3e-5, and lambda_c * phi / (gamma + 1e-6) to within 1e-5, inside the rounding of the six-decimal inputs. xi is computed from the other three values, not measured separately.",
+      "test": "test_f4_xi_is_computed_from_the_other_three"
+    },
+    {
+      "id": "F5",
+      "code": "CHAIN_ORDER_DIFFERS_FROM_TIME",
+      "statement": "In each run the first action is chained before its frame but timestamped after it (line 2 after line 3, line 5 after line 6).",
+      "test": "test_f5_each_first_action_is_chained_before_its_frame"
+    },
+    {
+      "id": "F6",
+      "code": "NOT_CANONICAL_JSONL",
+      "statement": "Line 1 is a '#' comment, so the file is not valid JSONL, and every record carries float timestamps, which OSIRIS-CANONICAL-JSON-V1 rejects. No line is a valid OSIRIS-TELEMETRY-V1 record.",
+      "test": "test_f6_no_line_is_canonical_telemetry"
+    }
+  ],
+  "limitations": [
+    "entry_hash, prev_hash, receipt_hash and frame.digest were not recomputed: their hashing rule is not documented and the generator, which ran on Node Beta, is not in this repository. They are cited as written; each line is bound by its own SHA-256 instead.",
+    "The generator's source and configuration were not inspected. The findings rest on the ledger file alone."
+  ],
+  "replacement": {
+    "schema": "OSIRIS-TELEMETRY-V1",
+    "module": "src/osiris_governance/telemetry.py",
+    "tests": "tests/test_telemetry.py"
+  },
+  "signing": {
+    "status": "UNSIGNED",
+    "prepared_by": "AI coding agent (Claude Code), for human review",
+    "required_signer": "an enrolled node key",
+    "signature_input": "RFC8785_CANONICAL_UTF8_BYTES"
+  }
+}

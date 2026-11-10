@@ -11,6 +11,7 @@ from .canonical import (
 )
 from .closure import closure_signing_payload, validate_closure
 from .closure_verify import ClosureVerificationReport, sign_closure, verify_closure
+from .telemetry import RunSummary, TelemetryRun, record_violations, seal_payload, verify_run
 from .scientific_evidence import (
     ScientificEvidencePackResult,
     ScientificEvidenceStatus,
@@ -22,7 +23,11 @@ from .contracts import (
     REPLAY_ACTION_KIND,
     REPLAY_CAPABILITY,
     REPLAY_SCOPE,
+    PROMOTION_SCOPE,
+    VERIFICATION_SCOPE,
     ActionProposal,
+    AuthorityPermit,
+    PermitAuthority,
     ReplayExecutionPermit,
     ReplayResultRecord,
 )
@@ -65,6 +70,46 @@ from .errors import (
     ScopeViolation,
     SigningUnavailableError,
     SubstitutionViolationError,
+    EvidenceIntegrityError,
+    StatisticalGateError,
+    SymbolicInvarianceError,
+    NoiselessBaselineError,
+    PromotionRollbackError,
+    TelemetryValidationError,
+)
+from .evidence_verifier import (
+    DEFAULT_NUMERICAL_TOLERANCE,
+    DocumentAuditFinding,
+    DocumentAuditReport,
+    ExternalVerifier,
+    NumericalVerificationResult,
+    RawDataPackage,
+    VerifiedEvidencePack,
+    audit_document_numerical_claims,
+)
+from .stat_gate import (
+    AASimulationReport,
+    PromotionDecision,
+    StatisticalPromotionGate,
+    batch_digest,
+    hierarchical_cluster_bootstrap_ci,
+)
+from .physics_checks import (
+    DetectabilityAuditResult,
+    InvarianceAuditResult,
+    NoiselessBaselineAuditResult,
+    PhysicsDetectabilityVerifier,
+)
+from .candidate_router import (
+    ConstrainedCandidateRouter,
+    EvaluatorConfinementGuard,
+    ScreeningResult,
+)
+from .champion_challenger import (
+    ChampionChallengerManager,
+    ChampionState,
+    PromotionPipelineResult,
+    RollbackEventResult,
 )
 from .execution_gate import ExecutionContract, ExecutionGate
 from .governor import CapabilityGovernor
@@ -94,7 +139,7 @@ from .models import (
     ViolationType,
     resolve_status_precedence,
 )
-from .ledger import ClaimEvaluationResult, DynamicEvidenceLedger
+from .ledger import ClaimEvaluationResult, DynamicEvidenceLedger, PRIVILEGED_EVENT_TYPES
 from .replay import ReplayAdapter
 
 __version__ = "0.2.0"
@@ -108,6 +153,12 @@ __all__ = [
     "verify_closure",
     "ClosureVerificationReport",
     "ClosureValidationError",
+    "TelemetryRun",
+    "RunSummary",
+    "TelemetryValidationError",
+    "record_violations",
+    "verify_run",
+    "seal_payload",
     "SigningUnavailableError",
     "canonical_sha256",
     "canonicalize_json",
@@ -142,6 +193,36 @@ __all__ = [
     "AdjudicationError",
     "ConfinementViolationError",
     "AuthorityGateError",
+    "EvidenceIntegrityError",
+    "StatisticalGateError",
+    "SymbolicInvarianceError",
+    "NoiselessBaselineError",
+    "PromotionRollbackError",
+    "DEFAULT_NUMERICAL_TOLERANCE",
+    "DocumentAuditFinding",
+    "DocumentAuditReport",
+    "ExternalVerifier",
+    "NumericalVerificationResult",
+    "RawDataPackage",
+    "VerifiedEvidencePack",
+    "audit_document_numerical_claims",
+    "AASimulationReport",
+    "PromotionDecision",
+    "StatisticalPromotionGate",
+    "batch_digest",
+    "hierarchical_cluster_bootstrap_ci",
+    "PermitAuthority",
+    "DetectabilityAuditResult",
+    "InvarianceAuditResult",
+    "NoiselessBaselineAuditResult",
+    "PhysicsDetectabilityVerifier",
+    "ConstrainedCandidateRouter",
+    "EvaluatorConfinementGuard",
+    "ScreeningResult",
+    "ChampionChallengerManager",
+    "ChampionState",
+    "PromotionPipelineResult",
+    "RollbackEventResult",
     "EpistemicStatus",
     "ReleaseRelevance",
     "ClaimRecord",
