@@ -201,13 +201,21 @@ class ExternalVerifier:
         claimed_metrics: Mapping[str, float],
         claim_id: str,
         subject: str = "Empirical Measurement",
+        evidence_class: EvidenceClass = EvidenceClass.MEASURED,
     ) -> VerifiedEvidencePack:
         """Recomputes all metrics from raw data and validates against claimed values.
         
         If any number in claimed_metrics deviates by more than tolerance from
         the recomputed value, all_matched will be False and epistemic status
         will be demoted to REFUTED.
+
+        ``evidence_class`` states what produced the raw data. Only MEASURED and SIMULATED are
+        accepted; a matching SIMULATED package is sealed with epistemic status SIMULATED, never
+        MEASURED, so simulator output cannot be promoted to a hardware measurement by sealing it.
         """
+        if evidence_class not in (EvidenceClass.MEASURED, EvidenceClass.SIMULATED):
+            raise EvidenceIntegrityError(
+                f"verify_and_seal seals raw MEASURED or SIMULATED data, not {evidence_class.value}")
         raw_digest = raw_pkg.payload_digest()
         recomputed: Dict[str, float] = {}
 
@@ -276,7 +284,12 @@ class ExternalVerifier:
         # 3. Formulate EvidenceRecord
         now_utc = datetime.now(timezone.utc).isoformat()
         evd_id = f"EVD-{raw_pkg.raw_id}"
-        epistemic = EpistemicStatus.MEASURED if all_matched else EpistemicStatus.REFUTED
+        if not all_matched:
+            epistemic = EpistemicStatus.REFUTED
+        elif evidence_class == EvidenceClass.SIMULATED:
+            epistemic = EpistemicStatus.SIMULATED
+        else:
+            epistemic = EpistemicStatus.MEASURED
 
         manifest_metrics = {
             k: (f"{v:.6f}" if isinstance(v, float) else str(v))
@@ -285,7 +298,7 @@ class ExternalVerifier:
 
         evidence_rec = EvidenceRecord(
             evidence_id=evd_id,
-            evidence_class=EvidenceClass.MEASURED,
+            evidence_class=evidence_class,
             domain=EvidenceDomain.E_EXTERNAL,
             claim_ids=[claim_id],
             artifact_digest=raw_digest,
