@@ -141,6 +141,14 @@ from .models import (
 )
 from .ledger import ClaimEvaluationResult, DynamicEvidenceLedger, PRIVILEGED_EVENT_TYPES
 from .replay import ReplayAdapter
+from .quantum_origin_entropy import (
+    CLASSICAL_LHV_BOUND,
+    QUANTUM_GHZ_MAX,
+    CertifiedEntropySeedReceipt,
+    MerminEvaluationResult,
+    MerminM3Certifier,
+    QuantumOriginEntropyProvider,
+)
 
 __version__ = "0.2.0"
 
@@ -266,4 +274,10 @@ __all__ = [
     "resolve_status_precedence",
     "ScopeBinding",
     "LedgerEvent",
+    "CLASSICAL_LHV_BOUND",
+    "QUANTUM_GHZ_MAX",
+    "CertifiedEntropySeedReceipt",
+    "MerminEvaluationResult",
+    "MerminM3Certifier",
+    "QuantumOriginEntropyProvider",
 ]
